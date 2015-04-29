@@ -13,6 +13,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+void print_tabs(int tabs) {
+	while (tabs--) {
+		printf("    ");
+	}
+}
+
 int main(int argc, char* argv[]) {
 	FILE *tracelog = fopen(argv[1], "r");
 
@@ -26,6 +32,7 @@ int main(int argc, char* argv[]) {
 	char cmd[100];
 	char* address_string;
 	int address;
+	int tabs = 0;
 
 	while(fgets(line, 25, tracelog) != NULL) {
 		if (line[10] != ' ') {
@@ -34,13 +41,30 @@ int main(int argc, char* argv[]) {
 		else {
 			memset(cmd, 0, 100);
 			line[10] = 0; // stringify the hex address
+
+			if (line[12] == 'n') {
+				print_tabs(tabs);
+				printf("%s\n", line + 11);
+				tabs++;
+			}
+			else if (line[12] =='x') {
+				if (tabs != 0) {
+					tabs--;
+					print_tabs(tabs);
+					printf("%s\n", line + 11);
+				}
+			}
+			else {
+				printf("error: %s\n", line + 11);
+			}
+
+
 			address_string = line;
 			address = (int)strtol(address_string, NULL, 16);
-			address--;
-
+			address -= 1;
 			sprintf(cmd, "grep 0x%08x %s", address, argv[2]);
-			printf("%s", line+11);
 			system(cmd);
+			printf("\n");
 		}
 	}
 
