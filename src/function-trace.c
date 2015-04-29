@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
 
 	while(fgets(line, 25, tracelog) != NULL) {
 		if (line[10] != ' ') {
-			printf("-----------------------------------------------------------------------------------------\n");
+			printf("%s\n", line);
 		}
 		else {
 			memset(cmd, 0, 100);
