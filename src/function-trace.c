@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
 	FILE *tracelog = fopen(argv[1], "r");
 
 	if (argc != 3 || tracelog == NULL) {
-		printf("file read error\n");
+		printf("file read error, check arguments\n");
 		fclose (tracelog);
 		return EXIT_FAILURE;
 	}
